@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+
+  redis-rdb:
+    image: redis:6
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./redis-rdb:/usr/local/etc/redis
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+
+  redis-aof:
+    image: redis:6
+    ports:
+      - "6380:6379"
+    volumes:
+      - ./redis-aof:/usr/local/etc/redis
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+
+  beanstalkd:
+    image: schickling/beanstalkd
+    ports:
+      - "11300:11300"
+    environment:
+    - BEANSTALKD_EXTRA="-b /var/lib/beanstalkd"
+    expose:
+      - "11300"
